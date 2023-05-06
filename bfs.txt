@@ -1,0 +1,41 @@
+'1- O grafo é definido como um dicionário, em que as chaves são os vértices e os valores são as listas de vizinhos de cada vértice.'
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D'],
+    'C': ['A', 'F'],
+    'D': ['B', 'E'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
+
+from collections import deque
+'2- A biblioteca collections é importada e uma deque é criada para armazenar os vértices a serem visitados.'
+
+
+'3-A função bfs é definida com três argumentos: o grafo, o vértice de partida e o vértice de destino.'
+def bfs(graph, start, destino):
+    
+    '4-Um conjunto é criado para armazenar os vértices visitados e uma fila (deque) é criada com uma tupla '
+    'contendo o vértice de partida e o caminho atualizado. O caminho inicial contém apenas o vértice de partida.'
+    visitado = set()
+    queue = deque([(start, [start])])
+    
+    '5-Enquanto a fila não estiver vazia, o nó mais antigo é removido da fila.'
+    while queue:
+        (no, caminho) = queue.popleft()
+        
+        '6-Se o nó removido ainda não tiver sido visitado, ele é adicionado ao conjunto de visitados.'
+        if no not in visitado:
+            visitado.add(no)
+            
+            '7-Se o nó removido for o nó de destino, o caminho atualizado é retornado.'
+            if no == destino:
+                return caminho
+                
+            '8-Caso contrário, para cada vizinho do nó removido, se o vizinho ainda não tiver sido visitado, ele é adicionado à fila juntamente com o caminho atualizado.'    
+            for vizinho in graph[no]:
+                if vizinho not in visitado:
+                    queue.append((vizinho, caminho + [vizinho]))
+                    
+caminho = bfs(graph, 'A', 'E')
+print(caminho)
